@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Raphaël Moradel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #121316;
+    --bg-elevated: #1a1c21;
+    --border: #2b2e35;
+    --border-strong: #3d4149;
+    --text: #ece9e4;
+    --text-muted: #969aa3;
+    --text-faint: #5c606a;
+    --accent: #c084fc;
+    --accent-2: #3fd0c9;
+    --accent-soft: #c084fc26;
+    --max-width: 840px;
+    --grid-line: #ffffff08;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle 420px at var(--mx, 50%) var(--my, 20%), var(--accent-soft), transparent 60%),
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 40px),
+      var(--bg);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  em { font-family: 'Fraunces', serif; font-style: italic; color: var(--accent); }
+  a { color: inherit; }
+  ::selection { background: var(--accent-soft); color: var(--text); }
+
+  header.site-nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    background: rgba(18, 19, 22, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+    color: var(--accent); transition: opacity 0.15s; }
+  .logo:hover { opacity: 0.65; }
+  nav.links { display: flex; gap: 26px; font-size: 0.88rem; color: var(--text-muted); }
+  nav.links a { text-decoration: none; position: relative; padding-bottom: 3px; }
+  nav.links a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.2s; }
+  nav.links a:hover { color: var(--text); }
+  nav.links a:hover::after { width: 100%; }
+  @media (max-width: 620px) { nav.links { gap: 14px; font-size: 0.78rem; } header.site-nav { padding: 14px 20px; } }
+
+  main { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; position: relative; }
+  @media (max-width: 620px) { main { padding: 0 20px; } }
+
+  section { padding: 90px 0; border-bottom: 1px dashed var(--border); position: relative; }
+  section:last-of-type { border-bottom: none; }
+
+  /* Hero */
+  .hero { padding-top: 80px; padding-bottom: 100px; position: relative; }
+  .watermark {
+    position: absolute; top: -40px; right: -20px; font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(6rem, 22vw, 13rem); font-weight: 700; color: transparent;
+    -webkit-text-stroke: 1px var(--border-strong); z-index: 0; user-select: none;
+    line-height: 1;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-hi { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent-2); margin-bottom: 18px; }
+  .hero-hi::before { content: '// '; color: var(--text-faint); }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; max-width: 15ch; }
+  .hero p.lede { margin-top: 22px; max-width: 54ch; color: var(--text-muted); font-size: 1.05rem; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip {
+    font-size: 0.85rem; padding: 7px 14px; border-radius: 30px; border: 1px solid var(--border-strong);
+    color: var(--text-muted); background: var(--bg-elevated); display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+
+  .hero-actions { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 3px; text-decoration: none;
+    font-size: 0.92rem; font-weight: 500; transition: all 0.15s; border: 1px solid var(--border-strong);
+  }
+  .btn.primary { background: var(--accent); color: #1a0e08; border-color: var(--accent); }
+  .btn.primary:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--accent-2); }
+  .btn.ghost { color: var(--text); }
+  .btn.ghost:hover { border-color: var(--text-muted); transform: translate(-2px, -2px); }
+
+  /* Section headers */
+  .section-head { margin-bottom: 40px; display: flex; align-items: baseline; gap: 14px; }
+  .section-head .ref { font-family: 'JetBrains Mono', monospace; color: var(--accent-2); font-size: 0.82rem; }
+  .section-head h2 { font-size: 1.55rem; }
+
+  /* About - ID card style */
+  .about-grid { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 44px; align-items: start; }
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-text { color: var(--text-muted); }
+  .about-text p { margin: 0 0 16px; max-width: 56ch; }
+  .about-text .callout { color: var(--text); }
+
+  .id-card {
+    border: 1px dashed var(--border-strong);
+    border-radius: 6px;
+    padding: 22px;
+    background: var(--bg-elevated);
+    position: relative;
+  }
+  .id-card::before {
+    content: 'FICHE'; position: absolute; top: -10px; left: 16px; background: var(--bg-elevated);
+    padding: 0 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-2); letter-spacing: 0.08em;
+  }
+  .id-card dl { margin: 0; }
+  .id-card > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .id-card > div:last-child { border-bottom: none; }
+  .id-card dt { color: var(--text-faint); }
+  .id-card dd { margin: 0; color: var(--text); text-align: right; }
+
+  /* Projects - datasheet cards */
+  .project-group { margin-bottom: 44px; }
+  .project-group:last-child { margin-bottom: 0; }
+  .project-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-faint); margin-bottom: 16px; }
+
+  .project {
+    position: relative;
+    padding: 26px 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+  .project:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .project::before, .project::after {
+    content: ''; position: absolute; width: 10px; height: 10px; border-color: var(--accent-2);
+    opacity: 0; transition: opacity 0.18s;
+  }
+  .project::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+  .project::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+  .project:hover::before, .project:hover::after { opacity: 1; }
+
+  .project-title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .project-title-row h3 { font-size: 1.12rem; }
+  .project-meta { font-family: 'JetBrains Mono', monospace; color: var(--text-faint); font-size: 0.76rem; white-space: nowrap; }
+  .project p.desc { color: var(--text-muted); margin: 12px 0 0; max-width: 62ch; }
+  .project .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .project .tags span { font-size: 0.76rem; color: var(--accent-2); border: 1px solid var(--accent-2); border-radius: 30px; padding: 3px 11px; }
+  .project-footer { display: flex; justify-content: flex-end; margin-top: 14px; }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; text-decoration: none;
+    color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; padding: 6px 12px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .project-link:hover { background: var(--accent); color: #1a0e08; }
+
+  /* Hobbies */
+  .hobby-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hobby {
+    display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border-strong);
+    border-radius: 30px; font-size: 0.9rem; background: var(--bg-elevated); cursor: default; transition: transform 0.15s;
+  }
+  .hobby:hover { transform: rotate(-2deg) scale(1.04); border-color: var(--accent); }
+
+  /* Skills */
+  .skill-block { margin-bottom: 26px; }
+  .skill-block:last-child { margin-bottom: 0; }
+  .skill-block h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 500; color: var(--text-faint); margin-bottom: 12px; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tags span { font-size: 0.88rem; padding: 6px 13px; border: 1px dashed var(--border-strong); border-radius: 3px; color: var(--text); }
+
+  /* Contact */
+  .contact-links { display: flex; flex-direction: column; gap: 2px; margin-top: 26px; }
+  .contact-links a {
+    text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem;
+    padding: 14px 0; border-bottom: 1px dashed var(--border); display: flex; justify-content: space-between;
+    align-items: center; transition: color 0.15s, padding-left 0.15s;
+  }
+  .contact-links a:hover { color: var(--accent); padding-left: 8px; }
+  .contact-links a span.arrow { color: var(--text-faint); font-size: 1rem; }
+
+  footer { padding: 36px 32px; text-align: center; color: var(--text-faint); font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; }
+
+  .theme-picker {
+    position: fixed; bottom: 20px; right: 20px; z-index: 60; display: flex; gap: 8px;
+    padding: 8px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 20px;
+  }
+  .theme-picker button { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; padding: 0; }
+  .theme-picker button.active { outline: 2px solid var(--text); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="site-nav" id="top">
+  <div class="logo">
+    <svg width="30" height="30" viewBox="0 0 34 34" fill="none">
+      <rect x="9" y="9" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="17" cy="17" r="1.8" fill="currentColor"/>
+      <line x1="13" y1="9" x2="13" y2="4" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="21" y1="9" x2="21" y2="4" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="13" y1="25" x2="13" y2="30" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="21" y1="25" x2="21" y2="30" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="9" y1="13" x2="4" y2="13" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="9" y1="21" x2="4" y2="21" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="25" y1="13" x2="30" y2="13" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="25" y1="21" x2="30" y2="21" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <nav class="links">
+    <a href="#apropos">Profil</a>
+    <a href="#projets">Projets</a>
+    <a href="#competences">Compétences</a>
+    <a href="#hors-labo">Hors labo</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="watermark">RM</div>
+    <div class="hero-content">
+      <p class="hero-hi">salut, moi c'est Raphaël</p>
+      <h1>J'aime démonter les trucs pour comprendre comment ils <em>marchent</em>.</h1>
+      <p class="lede">
+        (Et je les remonte, promis.) Étudiant ingénieur en systèmes embarqués à ESIEE Paris,
+        je construis des projets qui bougent vraiment — parfois pour un cours, parfois juste
+        pour voir si c'est possible.
+      </p>
+      <div class="chip-row">
+        <span class="chip">🎓 ESIEE Paris</span>
+        <span class="chip">🔧 Systèmes embarqués</span>
+        <span class="chip">🏁 Alternance dès sept. 2027</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projets">Voir mes projets</a>
+        <a class="btn ghost" href="#contact">Me contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="apropos">
+    <div class="section-head"><span class="ref">01</span><h2>Profil</h2></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Je suis en cycle ingénieur à ESIEE Paris (Université Gustave Eiffel),
+          filière systèmes embarqués, après deux ans de classes préparatoires intégrées.
+          <span class="callout">Ce qui m'intéresse vraiment, c'est la frontière entre le
+          logiciel embarqué et l'électronique de puissance</span> — le moment où une ligne de
+          code fait bouger un moteur.
+        </p>
+        <p>
+          À côté des projets académiques, je mène mes propres projets techniques, en général
+          motivés par une question simple : est-ce que je peux le construire moi-même, en
+          partant de zéro ?
+        </p>
+      </div>
+      <div class="id-card">
+        <div><dt>Formation</dt><dd>ESIEE Paris</dd></div>
+        <div><dt>Filière</dt><dd>Systèmes embarqués</dd></div>
+        <div><dt>Lieu</dt><dd>Villiers-sur-Marne</dd></div>
+        <div><dt>Recherche</dt><dd>Alternance 2027–2029</dd></div>
+        <div><dt>Domaines</dt><dd>Embarqué / mécatronique / robotique</dd></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projets">
+    <div class="section-head"><span class="ref">02</span><h2>Projets</h2></div>
+
+    <div class="project-group">
+      <p class="project-group-label">// académiques</p>
+
+      <div class="project">
+        <div class="project-title-row">
+          <h3>Egg Cutter</h3>
+          <span class="project-meta">REF/01 — 2025</span>
+        </div>
+        <p class="desc">
+          Analyse du besoin utilisateur et définition des contraintes fonctionnelles (sécurité,
+          ergonomie), modélisation 3D sous Fusion 360, puis prototypage rapide par découpe laser
+          et impression 3D. Tests expérimentaux et amélioration itérative du mécanisme après
+          analyse des défaillances.
+        </p>
+        <div class="tags"><span>Fusion 360</span><span>Prototypage rapide</span><span>Impression 3D</span></div>
+        <div class="project-footer">
+          <a class="project-link" href="https://hackaday.io/project/203138/logs" target="_blank" rel="noopener">Voir le journal de projet ↗</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-title-row">
+          <h3>Serre autonome connectée</h3>
+          <span class="project-meta">REF/02 — 2024</span>
+        </div>
+        <p class="desc">
+          Développement d'un système embarqué basé sur ESP32 pour le contrôle environnemental
+          (température, humidité, luminosité). Intégration de capteurs et d'actionneurs (pompe,
+          LED, servomoteur) avec logique de régulation, et supervision à distance via
+          transmission Wi-Fi.
+        </p>
+        <div class="tags"><span>ESP32</span><span>Systèmes embarqués</span><span>IoT</span></div>
+      </div>
+    </div>
+
+    <div class="project-group">
+      <p class="project-group-label">// personnels</p>
+
+      <div class="project">
+        <div class="project-title-row">
+          <h3>Crazy Kart électrique — perf max</h3>
+          <span class="project-meta">REF/03 — projet prévu, 2027</span>
+        </div>
+        <p class="desc">
+          Projet à venir : concevoir et construire entièrement un kart électrique (pas une
+          modification d'un kart existant), inspiré du concept Crazy Cart XL Pro. Objectifs de
+          conception : format adulte, moteur brushless, barre de drift, batterie lithium
+          48 V — 12 Ah (52 cellules 18650 avec BMS).
+        </p>
+        <div class="tags"><span>Électronique de puissance</span><span>Mécanique</span><span>Batteries Li-ion</span></div>
+      </div>
+    </div>
+
+    <div class="project-group">
+      <p class="project-group-label">// expérience</p>
+
+      <div class="project">
+        <div class="project-title-row">
+          <h3>Stage Dessinateur / Projeteur — INTÉRIS</h3>
+          <span class="project-meta">REF/04 — 2025</span>
+        </div>
+        <p class="desc">
+          Création et modification de PFD et PID sous AutoCAD 2D, vérification de la
+          correspondance entre les deux, en collaboration avec le bureau d'études.
+        </p>
+        <div class="tags"><span>AutoCAD 2D</span><span>Bureau d'études</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-title-row">
+          <h3>Stage Développeur / Programmeur — InLoad</h3>
+          <span class="project-meta">REF/05 — 2026</span>
+        </div>
+        <p class="desc">
+          Développement d'un répondeur sur Raspberry Pi et d'une page web de compte à rebours
+          en HTML, CSS et JavaScript. Gestion et réparation du système de sonorisation d'une
+          salle des fêtes.
+        </p>
+        <div class="tags"><span>Raspberry Pi</span><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competences">
+    <div class="section-head"><span class="ref">03</span><h2>Compétences</h2></div>
+
+    <div class="skill-block">
+      <h3>// logiciels</h3>
+      <div class="skill-tags"><span>SolidWorks</span><span>Fusion 360</span><span>AutoCAD 2D</span><span>Matlab</span><span>Arduino</span><span>Microsoft 365</span><span>Visual Studio Code</span><span>Linux</span></div>
+    </div>
+    <div class="skill-block">
+      <h3>// programmation</h3>
+      <div class="skill-tags"><span>Java</span><span>Python</span><span>C / C++</span><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+    </div>
+    <div class="skill-block">
+      <h3>// langues</h3>
+      <div class="skill-tags"><span>Anglais — C1</span><span>Espagnol — C1</span><span>Portugais — B1</span><span>Italien — B1</span></div>
+    </div>
+    <div class="skill-block">
+      <h3>// savoir-être</h3>
+      <div class="skill-tags"><span>Travail d'équipe</span><span>Esprit d'analyse</span><span>Adaptabilité</span><span>Communication</span></div>
+    </div>
+  </section>
+
+  <section id="hors-labo">
+    <div class="section-head"><span class="ref">04</span><h2>Hors labo</h2></div>
+    <p class="about-text" style="margin-bottom: 24px;">Parce qu'un recruteur c'est aussi curieux de savoir ce qu'il y a derrière le CV.</p>
+    <div class="hobby-grid">
+      <span class="hobby">🏃 Course à pied</span>
+      <span class="hobby">⚽ Foot</span>
+      <span class="hobby">✈️ Voyages</span>
+      <span class="hobby">🎬 Cinéma</span>
+      <span class="hobby">🎮 Jeux vidéo</span>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-head"><span class="ref">05</span><h2>Contact</h2></div>
+    <p class="about-text">Une question, une offre d'alternance, ou juste envie d'échanger sur un projet — n'hésite pas.</p>
+    <div class="contact-links">
+      <a href="mailto:raphael.moradel@edu.esiee.fr">raphael.moradel@edu.esiee.fr <span class="arrow">↗</span></a>
+      <a href="tel:0769598888">07 69 59 88 88 <span class="arrow">↗</span></a>
+      <a href="https://www.linkedin.com/in/rapha%C3%ABl-moradel-41a175331" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
+      <a href="https://github.com/raphaelmoradel" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer>fabriqué avec curiosité (et pas mal de café) — Raphaël Moradel, 2026</footer>
+
+<div class="theme-picker" role="group" aria-label="Changer la couleur d'accent">
+  <button style="background:#ff6b4a" data-color="#ff6b4a" aria-label="Corail"></button>
+  <button style="background:#5b8def" data-color="#5b8def" aria-label="Bleu"></button>
+  <button style="background:#4fd1a5" data-color="#4fd1a5" aria-label="Vert"></button>
+  <button style="background:#f5c451" data-color="#f5c451" aria-label="Jaune"></button>
+  <button style="background:#c084fc" data-color="#c084fc" class="active" aria-label="Violet"></button>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.theme-picker button');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.documentElement.style.setProperty('--accent', btn.dataset.color);
+      document.documentElement.style.setProperty('--accent-soft', btn.dataset.color + '26');
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      document.body.style.setProperty('--mx', e.clientX + 'px');
+      document.body.style.setProperty('--my', e.clientY + 'px');
+    });
+  }
+</script>
+
+</body>
+</html>
